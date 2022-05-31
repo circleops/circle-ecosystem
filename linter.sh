@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Copyright (c) 2022 Circle Internet Financial Trading Company Limited.
 # All rights reserved.
@@ -10,22 +10,32 @@
 # of this source code or any related proprietary information is strictly
 # prohibited without the express written permission of Circle Internet Financial
 # Trading Company Limited.
+#
 
-if [ $# -ne 2 ]
+## linter.sh - Helper script to lint yml files
+## Requires the yamllint package. can be installed apt-get -y install yamllint
+## Usage : ./linter.sh "FILE TO CHECK"
+if [ $# -ne 1 ]
 then
-    echo "Usage: $0 bucket_name file_to_upload" >&2
+    echo "Usage: $0 YAML file" >&2
+    exit 1
+fi
+FILE="$1"
+# ensure yamllint package is installed
+yamllint -v &> /dev/null
+if [ $? -ne 0 ]
+then
+    echo "Package yamllint does not exist. Please install yamllint" >&2
     exit 1
 fi
 
-BUCKET="$1"
-FILE="$2"
 
-if [ -f "$FILE" ]
-then
-    echo "$FILE exists."
+### Steps
+if [ $FILE == *.yml ] || [ $FILE == *.yaml ]  ; then
+    yamllint $FILE
 else
-    echo "$FILE does not exist or isn't a file"
+    echo "File $FILE does not exist or it isnt a yml or yaml file. Please check your file"
     exit 1
 fi
 
-aws s3 cp $FILE s3://${BUCKET}/${FILE}
+
