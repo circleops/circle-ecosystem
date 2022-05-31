@@ -29,7 +29,6 @@ else
 fi
 
 aws s3 cp $FILE s3://${BUCKET}/${FILE}
-#aws s3 sync catalog s3://$BUCKET/catalog --acl public-read --exclude "*" --include "*.yml" --include "*.yaml"
 
 
 
