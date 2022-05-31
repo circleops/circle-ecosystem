@@ -27,7 +27,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run Linter
-        run: ./linter.py
+        run: python linter.py
 
   virus_scanner:
     # The type of runner that the job will run on
